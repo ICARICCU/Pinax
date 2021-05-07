@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    xmlns:m="pinaxcms.contents.views.components.*"
+    xmlns:t="pinaxcms.template.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Popup.php">
+    <pnx:Import src="_common.xml" />
+    <pnx:JSscript folder="pinaxcms.contents.js" />
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs" cssClassCurrent="active" addQueryString="true" visible="true" />
+
+    <mvc:State name="index">
+        <pnx:Modifier target="Page" attribute="templateFileName" value="Page.php" />
+        <pnx:Modifier target="tabs" attribute="visible" value="false" />
+        <pnx:Modifier target="pageTitle" attribute="visible" value="false" />
+        <m:SiteTreeView id="treeview" editableRegion="treeview" controllerName="pinaxcms.contents.controllers.siteTree.*" />
+        <m:PageEdit id="pageEdit" mode="container" />
+    </mvc:State>
+
+    <mvc:State name="empty">
+        <pnx:Modifier target="tabs" attribute="visible" value="false" />
+        <pnx:Modifier target="pageTitle" attribute="visible" value="false" />
+    </mvc:State>
+
+    <mvc:State name="add">
+        <pnx:Modifier target="tabs" attribute="visible" value="false" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.contents.controllers.pageEdit.*">
+            <cms:pageTitleModifier action="add" label="{i18n:Add a new page}" new="true" />
+
+            <pnx:Input id="title" label="{i18n:PNX_PAGE_TITLE}" size="90" required="true" />
+            <cms:SelectPage id="pageParent" label="{i18n:PNX_PAGE_SELECT_PARENT}" required="true" />
+            <cms:SelectPageTypeNew id="pageType" label="{i18n:PNX_PAGE_SELECT_TYPE}" required="true" linked="pageParent" hideBlock="true" />
+
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=add" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="addblock">
+        <pnx:Modifier target="tabs" attribute="visible" value="false" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.contents.controllers.pageEdit.*">
+            <cms:pageTitleModifier action="addblock" label="{i18n:Aggiungi un contenuto}" new="true" />
+
+            <pnx:Input id="title" label="{i18n:PNX_PAGE_TITLE}" size="90" required="true" />
+            <pnx:Hidden id="pageParent" />
+            <cms:SelectPageTypeNew id="pageType" label="{i18n:PNX_PAGE_SELECT_TYPE}" required="true" linked="pageParent" onlyWithParent="true" />
+
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=addblock" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="edit" label="{i18n:Content}">
+        <m:PageEdit id="pageEdit" mode="edit" controllerName="pinaxcms.contents.controllers.pageEdit.*">
+            <cms:pageTitleModifier action="edit" label="{i18n:Edit page}" field="__title" />
+            <cms:FormButtonsPanel>
+                <pnx:Input id="__comment" placeholder="{i18n:Inserisci il commento}" cssClass="js-pinaxcms-savecomment" size="10" visible="{config:pinaxcms.content.history.comment}"/>
+                <pnx:HtmlButton id="save" label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" acl="*,edit" />
+                <pnx:HtmlButton id="saveDraft" label="{i18n:PNX_SAVE_DRAFT}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveDraft" acl="*,editDraft" />
+                <pnx:HtmlButton id="savePublish" label="{i18n:PNX_PUBLISH}" type="button" cssClass="btn js-pinaxcms-save" data="action=savePublish" acl="*,publish" />
+                <pnx:Link id="preview" label="{i18n:PNX_PREVIEW}" cssClass="btn" visible="false" target="_blank" />
+            </cms:FormButtonsPanel>
+        </m:PageEdit>
+    </mvc:State>
+
+    <mvc:State id="propertiesState" name="properties" label="{i18n:Properties}" acl="*,publish">
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.contents.controllers.pageEdit.*">
+            <cms:pageTitleModifier action="properties" label="{i18n:Edit properties}" field="menudetail_title" />
+            <pnx:Hidden id="menu_id" />
+            <pnx:Hidden id="menu_hasComment" />
+            <pnx:Hidden id="menu_printPdf" />
+            <pnx:Input id="menudetail_title" label="{i18n:PNX_PAGE_TITLE}" size="90" required="true" />
+            <pnx:Input id="menudetail_titleLink" label="{i18n:PNX_PAGE_TITLE_LINK}" size="90"  />
+            <pnx:Input id="menudetail_linkDescription" label="{i18n:PNX_PAGE_TITLE_ALT}" size="90"  />
+            <pnx:Input id="menu_cssClass" label="{i18n:Menu css class}" size="90"  />
+            <pnx:Input id="menudetail_url" label="{i18n:PNX_LINKED_URL}" size="90" />
+            <pnx:Date id="menu_creationDate" label="{i18n:PNX_CREATION_DATE}" />
+            <pnx:Checkbox id="menu_isLocked" label="{i18n:PNX_PROTECTED_PAGE}" data="type=checkbox" />
+            <pnx:Checkbox id="menudetail_hideInNavigation" label="{i18n:PNX_PAGE_HIDE_IN_NAVIGATION}" data="type=checkbox" />
+            <!--
+            <pnx:Checkbox id="menu_hasComment" label="{i18n:PNX_ENABLE_PAGE_COMMENTS}" data="type=checkbox" />
+            <pnx:Checkbox id="menu_printPdf" label="{i18n:PNX_PRINT_PDF}" data="type=checkbox" />
+            -->
+            <pnx:Hidden id="menu_parentPageType" />
+            <cms:SelectPageTypeNew id="menu_pageType" label="{i18n:PNX_PAGE_SELECT_TYPE}" hideBlock="true" linked="menu_parentPageType" required="true" />
+            <pnx:if condition="__Config::get('pinaxcms.dublincore.enabled')">
+                <pnx:Input id="menudetail_seoTitle" label="{i18n:Title for SEO}" size="90" />
+                <pnx:Fieldset cssClass="dublinCoreBox" label="{i18n:MW_DUBLIN_CORE}">
+                    <pnx:Input id="menudetail_keywords" label="{i18n:MW_DC_KEYWORDS}" size="90" />
+                    <pnx:Input id="menudetail_description" label="{i18n:MW_DC_SHORTDESCRIPTION}" size="90" />
+                    <pnx:Input id="menudetail_subject" label="{i18n:MW_DC_SUBJECT}" size="90" />
+                    <pnx:Input id="menudetail_creator" label="{i18n:MW_DC_CREATOR}" size="90" />
+                    <pnx:Input id="menudetail_publisher" label="{i18n:MW_DC_PUBLISHER}" size="90" />
+                    <pnx:Input id="menudetail_contributor" label="{i18n:MW_DC_CONTRIBUTOR}" size="90" />
+                    <pnx:Input id="menudetail_type" label="{i18n:MW_DC_TYPE}" size="90" />
+                    <pnx:Input id="menudetail_identifier" label="{i18n:MW_DC_IDENTIFIER}" size="90" />
+                    <pnx:Input id="menudetail_source" label="{i18n:MW_DC_SOURCE}" size="90" />
+                    <pnx:Input id="menudetail_relation" label="{i18n:MW_DC_RELATION}" size="90" />
+                    <pnx:Input id="menudetail_coverage" label="{i18n:MW_DC_COVERAGE}" size="90" />
+                </pnx:Fieldset>
+            </pnx:if>
+            <pnx:if condition="!__Config::get('pinaxcms.dublincore.enabled')">
+                <pnx:Fieldset cssClass="dublinCoreBox" label="{i18n:Metadati}">
+                    <pnx:Input id="menudetail_seoTitle" label="{i18n:Title for SEO}" size="90" />
+                    <pnx:Input id="menudetail_keywords" label="{i18n:MW_DC_KEYWORDS}" size="90" />
+                    <pnx:Input id="menudetail_description" label="{i18n:MW_DC_SHORTDESCRIPTION}" size="90" />
+                    <pnx:Hidden id="menudetail_subject" />
+                    <pnx:Hidden id="menudetail_creator" />
+                    <pnx:Hidden id="menudetail_publisher" />
+                    <pnx:Hidden id="menudetail_contributor" />
+                    <pnx:Hidden id="menudetail_type" />
+                    <pnx:Hidden id="menudetail_identifier" />
+                    <pnx:Hidden id="menudetail_source" />
+                    <pnx:Hidden id="menudetail_relation" />
+                    <pnx:Hidden id="menudetail_coverage" />
+                </pnx:Fieldset>
+            </pnx:if>
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=saveProperties" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="history" label="{i18n:History}" draw="{config:pinaxcms.content.history}">
+        <cms:FormEdit id="history" addValidationJs="false">
+           <cms:pageTitleModifier action="history" label="{i18n:History}" />
+            <m:ShowHistory id="history" />
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:Confronta}" type="button" cssClass="btn btn-primary js-pinaxcms-history" data="action=add" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State id="templateState" name="template" label="{i18n:Templates and colors}" controllerName="pinaxcms.template.controllers.CheckTemplateTabDraw">
+        <t:TemplateEdit id="templateEdit" controllerName="pinaxcms.template.controllers.*">
+            <cms:pageTitleModifier action="template" label="{i18n:Edit layout}" />
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+            </cms:FormButtonsPanel>
+        </t:TemplateEdit>
+    </mvc:State>
+
+    <mvc:State name="permissions" label="{i18n:Permissions}" draw="{config:ACL_ROLES}" acl="*,publish">
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.contents.controllers.pageEdit.*">
+            <pnx:Hidden id="menuId" />
+            <pnx:Checkbox id="extendsPermissions" label="Estendi permessi alle pagine figlie" data="type=checkbox"/>
+            <pnx:Fieldset label="Permessi di modifica (Back-end)" cssClass="permessi">
+                <pnx:Input id="aclBack" label="{i18n:Ruoli}" data="type=selectfrom;multiple=true;model=pinaxcms.roleManager.models.Role;field=role_name;get_id=true" size="255" />
+            </pnx:Fieldset>
+            <pnx:Fieldset label="Permessi di visualizzazione (Front-end)" cssClass="permessi">
+                <pnx:Input id="aclFront" label="{i18n:Ruoli}" data="type=selectfrom;multiple=true;model=pinaxcms.roleManager.models.Role;field=role_name;get_id=true" size="255" />
+            </pnx:Fieldset>
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=savePermissions" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+</mvc:Page>

@@ -1,6 +1,8 @@
-BSD 3-Clause License
+Pinax is a fork of Glizy Framework.
+The license change (LGPL to BSD3) was authorized by the original author.
 
-Copyright (c) 2021, ICARICCU
+Copyright (c) 2005-2020 Daniele Ugoletti, GruppoMeta (M.E.T.A srl) - Glizy Framework
+Copyright (c) 2021 ICAR, ICCU - PINAX
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without

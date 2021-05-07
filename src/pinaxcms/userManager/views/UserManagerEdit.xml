@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <pnx:Import src="_common.xml" />
+
+    <mvc:State name="index">
+        <pnx:DataProvider id="dp" recordClassName="pinaxcms.userManager.models.User" query="all" />
+        <pnx:DataGrid id="dataGrid" label="{i18n: Elenco utenti}" dataProvider="{dp}" filters="{filters}" tableCssClass="table table-striped table-bordered" cssClass="odd,even" paginate="{dataGridPaginate}" controller="{dataGridEdit}" orderStyle="BLACK">
+            <pnx:DataGridColumn columnName="user_id" visible="false" key="true"/>
+            <pnx:DataGridColumn columnName="user_firstName" headerText="{i18n:PNX_USER_FIRST}" />
+            <pnx:DataGridColumn columnName="user_lastName" headerText="{i18n:PNX_USER_LAST}" />
+            <pnx:DataGridColumn columnName="user_email" headerText="{i18n:PNX_USER_EMAIL}" />
+            <pnx:DataGridColumn columnName="usergroup_name" headerText="{i18n:PNX_USER_GROUP}" />
+            <pnx:DataGridColumn columnName="user_isActive" headerText="{i18n:PNX_USER_ACTIVE}" align="center" renderCell="pinaxcms.views.renderer.CellIsActive" />
+            <pnx:DataGridColumn columnName="user_id" align="right" width="80" renderCell="pinaxcms.contents.views.renderer.CellEditDelete" />
+        </pnx:DataGrid>
+        <pnx:PaginateResult id="dataGridPaginate" cssClass="pagination"/>
+
+        <pnx:Link label="{i18n:PNX_USER_ADD_NEW_RECORD}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="{config:pinaxcms.icon.add.cssClass}" routeUrl="actionsMVCAdd" editableRegion="actions" acl="*,new"/>
+    </mvc:State>
+
+     <mvc:State name="edit">
+        <pnx:DataDictionary id="usergroupsDP" recordClassName="pinaxcms.groupManager.models.UserGroup" field="usergroup_id,usergroup_name" query="allGroups" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.userManager.controllers.*">
+            <cms:pageTitleModifier action="edit" label="{i18n:New user}" new="true" />
+            <cms:pageTitleModifier action="edit" label="{i18n:Edit user}" new="false" field="user_loginId" />
+            <pnx:Hidden id='__id' />
+            <pnx:Hidden id="__model" value="pinax.models.User"/>
+            <pnx:Checkbox id="user_isActive" label="{i18n:PNX_USER_IS_ACTIVE}" data="type=checkbox" />
+            <pnx:Input id="user_loginId" label="{i18n:PNX_USER_LOGINID}" size="90" required="true" />
+            <pnx:Input id="user_password" label="{i18n:PNX_USER_PASSWORD}" size="90" required="true" />
+            <pnx:List id="user_FK_usergroup_id" label="{i18n:PNX_USER_GROUP}" dataProvider="{usergroupsDP}" emptyValue="-" required="true" />
+            <pnx:Input id="user_firstName" label="{i18n:PNX_USER_FIRST}" size="90" required="true" />
+            <pnx:Input id="user_lastName" label="{i18n:PNX_USER_LAST}" size="90" required="true" />
+            <pnx:Input id="user_email" label="{i18n:PNX_USER_EMAIL}" size="90" required="true" type="email" />
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CANCEL}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <pnx:Hidden controllerName="pinaxcms.contents.controllers.activeRecordEdit.*" />
+        <pnx:Hidden id="__model" value="pinax.models.User"/>
+    </mvc:State>
+
+</mvc:Page>

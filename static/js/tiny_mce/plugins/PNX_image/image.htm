@@ -1,0 +1,102 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#PNX_image.window_title}</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script language="javascript" type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script language="javascript" type="text/javascript" src="../../utils/mctabs.js"></script>
+	<script language="javascript" type="text/javascript" src="../../utils/form_utils.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../Pinax.js"></script>
+    <script language="javascript" type="text/javascript" src="jscripts/functions.js"></script>
+	<link href="css/PNX_image.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="PNX_image" style="display: none">
+    <form onsubmit="insertAction();return false;" action="#">
+        <input type="hidden" id="src" name="src" value = ""/>
+        <input type="hidden" id="imgid" value = ""/>
+        <input type="hidden" id="orw" value = ""/>
+        <input type="hidden" id="orh" value = ""/>
+        <table style="background-color:#FFFFFF;border:1px solid #919B9C;" width="100%">
+            <tr>
+                <td style="padding-left:4px;" valign="top">
+                    <table border="0" cellpadding="0" cellspacing="0" width="100%" height="334">
+                        <tr><td valign="top">
+			        	    <fieldset>
+			                    <legend>{#PNX_image.general}</legend>
+                                <table border="0" cellpadding="2" cellspacing="0">
+                                    <tr>
+                                        <td rowspan="5" width="100" align="center" valign="middle"><img src="images/sample.gif" alt="{#PNX_image.sample_image}" id="thumbnail" width="100" height="100"/></td>
+                                        <td width="100%"><label id="altlabel" for="alt">{#PNX_image.alt}</label></td>
+        					        <tr>
+                                    <tr><td><input id="alt" name="alt" type="text" value="" /></td></tr>
+	    		        			<tr><td><label id="titlelabel" for="title">{#PNX_image.title}</label></td></tr>
+			    		        	<tr><td><input id="title" name="title" type="text" value="" /></td></tr>
+        					    </table>
+    	        			</fieldset>
+                        </td></tr>
+                        <tr><td valign="bottom">
+	            			<fieldset>
+		    	        		<legend>{#PNX_image.tab_appearance}</legend>
+                                <table border="0" cellpadding="2" cellspacing="0">
+            	        			<tr>
+			    		        		<td><label id="widthlabel" for="width">{#PNX_image.dimensions}</label></td>
+				    			        <td nowrap="nowrap">
+        					    			<input name="width" type="text" id="width" value="" size="5" maxlength="5" onchange="changeHeight();" /> x
+		        				    		<input name="height" type="text" id="height" value="" size="5" maxlength="5" onchange="changeWidth();" /> px
+                                            <select id="sizeList" onchange="changeSize(this);">
+                                            </select>
+				        			    </td>
+    					        	</tr>
+            						<tr>
+	            						<td width="1%"><label id="vspacelabel" for="vspace">{#PNX_image.vspace}</label></td>
+		    	        				<td><input name="vspace" type="text" id="vspace" value="" size="3" maxlength="3" onchange="updateStyle();" />
+			    		        		</td>
+        				    		</tr>
+                                    <tr>
+				        			    <td><label id="hspacelabel" for="hspace">{#PNX_image.hspace}</label></td>
+    					        		<td><input name="hspace" type="text" id="hspace" value="" size="3" maxlength="3" onchange="updateStyle();" /></td>
+        	    					</tr>
+                    				<tr>
+			            				<td><label id="borderlabel" for="border">{#PNX_image.border}</label></td>
+				    	        		<td><input id="border" name="border" type="text" value="" size="3" maxlength="3" onchange="updateStyle();" /></td>
+        					    	</tr>
+                                    <tr>
+				        			    <td><label id="classlabel" for="classlist">{#class_name}</label></td>
+    					        		<td colspan="2"><input name="cssclass" type="text" id="cssclass" value="" onchange="updateStyle();"/><select id="cssClassList" onchange="changeCssClass(this);">
+
+		        					    	</select></td>
+				        	    	</tr>
+                                    <tr>
+							            <td><label id="stylelabel" for="style">{#PNX_image.style}</label></td>
+            							<td colspan="2"><input id="style" name="style" type="text" value="" onchange="styleUpdated();" /></td>
+	            					</tr>
+                                    <tr>
+                                        <td><label id="zoomlabel" for="zoom">{#PNX_image.zoom}</label></td>
+                                        <td colspan="2"><input id="zoom" name="zoom" type="checkbox" value="" /></td>
+                                    </tr>
+                                    <tr>
+                                        <td><label id="captionlabel" for="caption">{#PNX_image.caption}</label></td>
+                                        <td colspan="2"><input id="caption" name="caption" type="checkbox" value="" /></td>
+                                    </tr>
+                        		</table>
+        				    </fieldset>
+                        </td></tr>
+                    </table>
+                </td>
+                <td style="padding:4px;width:100%;">
+                    <fieldset>
+                        <iframe id="picker" frameborder="0"></iframe>
+                    </fieldset>
+                </td>
+            </tr>
+        </table>
+        <div class="mceActionPanel">
+		   	<div style="float: left">
+		        <input type="button" id="insert" name="insert" value="{#insert}" onclick="insertAction();" />
+        	</div>
+        	<div style="float: right">
+		   		<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="cancelAction();" />
+        	</div>
+		</div>
+    </form>
+</body>
+</html>

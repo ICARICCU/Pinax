@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:pnx="pinax.components.*"
+    xmlns:model="pinax.models.*/"
+    model:tableName="usergroups_tbl" model:usePrefix="true">
+
+    <model:Query name="internal" type="function">
+    <![CDATA[
+        $iterator->select('usergroup_id as k', 'usergroup_name as v')
+                 ->where('userGroup_backEndAccess', 1)
+                 ->orderBy('v');
+    ]]>
+    </model:Query>
+
+    <model:Query name="external" type="function">
+    <![CDATA[
+        $iterator->select('usergroup_id as k', 'usergroup_name as v')
+                ->where('userGroup_backEndAccess', 0)
+                ->orderBy('v');
+    ]]>
+    </model:Query>
+
+    <model:Query name="allGroups" type="function">
+    <![CDATA[
+        $iterator->select('usergroup_id as k', 'usergroup_name as v')
+                ->orderBy('v');
+    ]]>
+    </model:Query>
+</model:Model>

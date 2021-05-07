@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:pnx="pinax.components.*"
+    xmlns:model="pinax.models.*/"
+    model:tableName="userlogs_tbl" model:usePrefix="true" model:siteField="userlog_FK_site_id">
+<!--
+    <pnx:ModelDefine>
+        <pnx:ModelField name="userlog_date" attribute="defaultInsertValue" value="NOW()" />
+        <pnx:ModelField name="userlog_lastAction" attribute="defaultInsertValue" value="NOW()" />
+        <pnx:ModelField name="userlog_lastAction" attribute="defaultUpdateValue" value="NOW()" />
+    </pnx:ModelDefine>
+-->
+</model:Model>

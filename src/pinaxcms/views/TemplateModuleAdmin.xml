@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+	xmlns:pnx="pinax.components.*"
+	xmlns:cms="pinaxcms.views.components.*"
+	xmlns:mvc="pinax.mvc.components.*"
+    xmlns:r="pinaxcms.roleManager.views.*"
+    defaultEditableRegion="content"
+	templateType="php"
+	templateFileName="##templateFileName##">
+
+    <pnx:templateDefine name="templateFileName" required="false" defaultValue="Page.php"/>
+    <pnx:templateDefine name="model" required="true" />
+    <pnx:templateDefine name="query" required="false" defaultValue="all" />
+    <pnx:templateDefine name="grid_fields" required="true" />
+    <pnx:templateDefine name="form_fields" required="true" />
+	<pnx:templateDefine name="extra_html_buttons" required="false" defaultValue=""/>
+	<pnx:templateDefine name="extrabutton_fields" required="false" defaultValue=""/>
+    <pnx:templateDefine name="custom_states" required="false" defaultValue="" />
+    <pnx:templateDefine name="custom_states_top" required="false" defaultValue="" />
+    <pnx:templateDefine name="primary_key" required="false" defaultValue="document_id" />
+    <pnx:templateDefine name="visibility_field" required="false" defaultValue="document_detail_isVisible" />
+    <pnx:templateDefine name="controller_name" required="false" defaultValue="pinaxcms.contents.controllers.moduleEdit.*" />
+    <pnx:templateDefine name="show_external_id" required="false" defaultValue="true" />
+    <pnx:templateDefine name="show_permissions" required="false" defaultValue="__Config::get('ACL_MODULES')" />
+    <pnx:templateDefine name="render_cell" required="false" defaultValue="pinaxcms.contents.views.renderer.CellEditDeleteVisible" />
+    <pnx:templateDefine name="filter_class" required="false" defaultValue="" />
+    <pnx:templateDefine name="formedit_new_code" required="false" defaultValue="false" />
+    <pnx:templateDefine name="form_buttons_panel_region" required="false" defaultValue="{config:pinax.formButton.region}" />
+    <pnx:templateDefine name="common" required="false" defaultValue="_common.xml" />
+    <pnx:templateDefine name="ajaxParams" required="false" defaultValue="" />
+    <pnx:templateDefine name="add_ruote_url" required="false" defaultValue="actionsMVCAdd" />
+    <pnx:templateDefine name="showDefaultAddNewRecord" required="false" defaultValue="true" />
+
+    <pnx:if condition="&quot;##common##&quot;">
+        <pnx:Import src="##common##" />
+    </pnx:if>
+
+    ##custom_states_top##
+
+    <mvc:State name="index">
+        <pnx:Hidden controllerName="##controller_name##" />
+			##extrabutton_fields##
+        <pnx:if condition="&quot;##showDefaultAddNewRecord##&quot;">
+            <pnx:Link id="addNewRecord" label="{i18n:PNX_ADD_NEW_RECORD}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="{config:pinaxcms.icon.add.cssClass}" routeUrl="##add_ruote_url##" editableRegion="actions" acl="*,new"/>
+        </pnx:if>
+        <pnx:DataGridAjax id="dataGrid" recordClassName="##model##" query="##query##" cssClass="table table-bordered table-striped" filterClass="##filter_class##" ajaxParams="##ajaxParams##">
+            ##grid_fields##
+            <pnx:DataGridColumn columnName="##primary_key##" sortable="false" searchable="false" cssClass="actions" renderCell="##render_cell##" />
+        </pnx:DataGridAjax>
+    </mvc:State>
+
+    <mvc:State name="edit">
+        <cms:FormEdit id="editForm" controllerName="##controller_name##" newCode="##formedit_new_code##" ajaxParams="##ajaxParams##" pnx:editMode="edit">
+            <pnx:Hidden id="__id" />
+            <pnx:Hidden id="__model" value="##model##"/>
+            <pnx:if condition="&quot;##visibility_field##&quot;">
+                <pnx:Hidden id="##visibility_field##" />
+            </pnx:if>
+            <pnx:Input id="external_id" label="{i18n:ID}" size="90" disabled="true" visible="##show_external_id##" />
+            ##form_fields##
+
+            <pnx:if condition="##show_permissions##">
+                <pnx:Import src="_permissions.xml" />
+            </pnx:if>
+
+            <cms:FormButtonsPanel editableRegion="##form_buttons_panel_region##">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CANCEL}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+				##extra_html_buttons##
+			</cms:FormButtonsPanel>
+		</cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <pnx:Hidden controllerName="##controller_name##" />
+        <pnx:Hidden id="__model" value="##model##"/>
+    </mvc:State>
+
+    <mvc:State name="deletelanguage">
+        <pnx:Hidden controllerName="##controller_name##" />
+        <pnx:Hidden id="__model" value="##model##"/>
+    </mvc:State>
+
+    <mvc:State name="togglevisibility">
+        <pnx:Hidden controllerName="##controller_name##" />
+        <pnx:Hidden id="__model" value="##model##"/>
+    </mvc:State>
+
+    ##custom_states##
+</mvc:Page>

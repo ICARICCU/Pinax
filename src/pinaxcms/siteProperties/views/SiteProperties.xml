@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <pnx:Import src="_common.xml" />
+
+    <mvc:State name="index">
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.siteProperties.controllers.*">
+            <pnx:Input id="title" label="{i18n:MW_SITE_TITLE}" value="{siteProp}" size="50" required="true" />
+            <pnx:Input id="address" label="{i18n:MW_SITE_ADDRESS}" value="{siteProp}" rows="12" cols="75" type="multiline" htmlEditor="true" required="false" data="type=tinymce" />
+            <pnx:Input id="copyright" label="{i18n:MW_SITE_COPYRIGHT}" value="{siteProp}" size="75" required="false" />
+            <pnx:Input id="slideShow" label="{i18n:MW_SITE_SLIDESHOW_SPEED}" value="{siteProp}" size="3" maxLength="3" required="false" />
+            <pnx:Input id="analytics" label="{i18n:Google Analytics code}" value="{siteProp}" size="30" />
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+</mvc:Page>

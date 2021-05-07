@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+	xmlns:pnx="pinax.components.*"
+	xmlns:mvc="pinax.mvc.components.*"
+	xmlns:m="pinaxcms.modulesManager.views.components.*"
+	controllerName="pinaxcms.modulesManager.controllers.*"
+	templateType="php"
+	templateFileName="Page.php"
+	defaultEditableRegion="content">
+	<pnx:Import src="_common.xml" />
+
+	<mvc:State name="index">
+		<m:Datagrid id="dataGrid" cssClass="table table-bordered table-striped" />
+	</mvc:State>
+
+	<mvc:State name="duplicate">
+		<pnx:Form>
+			<pnx:LongText id="text" adm:htmlEditor="true" />
+			<pnx:Hidden id="moduleId" />
+			<pnx:Input id="moduleName" label="{i18n:Nome del modulo}" required="true" />
+
+			<pnx:Panel cssClass="formButtons">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" cssClass="btn btn-primary" />
+            </pnx:Panel>
+		</pnx:Form>
+	</mvc:State>
+
+</mvc:Page>

@@ -1,0 +1,52 @@
+{
+  "name": "icariccu/pinax-2",
+  "description": "Pinax Framework",
+  "license": "BSD 3-Clause",
+  "require": {
+    "phptal/phptal": "1.4.0",
+    "phpmailer/phpmailer": "6.1.6",
+    "pear/cache_lite": "*",
+    "linkorb/jsmin-php": "*",
+    "doctrine/cache": "1.6.*",
+    "doctrine/collections": "1.4.*",
+    "doctrine/dbal": "^2.10",
+    "jdorn/sql-formatter": "1.2.*",
+    "defuse/php-encryption": "2.1.*",
+    "hashids/hashids": "^4.1",
+    "predis/predis": "^1.1"
+  },
+  "autoload": {
+      "files": [
+        "src/pinax/PinaxErrorHandler.php",
+        "src/pinax/PinaxClassLoader.php",
+        "src/pinax/PinaxObject.php",
+        "src/scripts/core.php",
+        "src/scripts/shortcuts.php"
+      ],
+      "psr-0": {
+        "pinax": "src/"
+      }
+  },
+  "require-dev": {
+    "vimeo/psalm": "^4.3",
+    "fakerphp/faker": "^1.13",
+    "phpstan/phpstan": "^0.12.64"
+  },
+  "scripts": {
+    "phpstan": [
+        "phpstan analyse --memory-limit 1G -c phpstan.neon"
+    ],
+    "psalm": [
+      "psalm"
+    ],
+    "psalm-nocache": [
+      "psalm --clear-global-cache",
+      "psalm --clear-cache",
+      "psalm"
+    ],
+    "quality-test": [
+      "@phpstan",
+      "@psalm"
+    ]
+  }
+}

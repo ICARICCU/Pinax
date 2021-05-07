@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:ma="pinaxcms.mediaArchive.views.components.*"
+    controllerName="storageBrowser"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Popup.php">
+
+    <mvc:State name="index">
+        <!--<pnx:Authenticator accessPageId="login" />
+
+        <pnx:ConfigValue key="PINAX_JS_LIB" value="jquery" action="set" />
+
+        <pnx:MessageBox type="SUCCESS" cssClass="alert alert-success" message="Risultato operazione"/>
+        <pnx:MessageBox type="ERROR" cssClass="alert alert-error" message=""/>-->
+
+        <ma:CustomStorageBrowser id="storageBrowser" />
+
+    </mvc:State>
+</mvc:Page>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    xmlns:t="pinaxcms.template.views.components.*"
+    controllerName="pinaxcms.template.controllers.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <pnx:Import src="_common.xml" />
+
+    <mvc:StateTabNavigation id="tabs" cssClass="nav nav-tabs" cssClassCurrent="active" addQueryString="true" />
+
+    <mvc:State name="index" label="{i18n:Template select}">
+        <cms:FormEdit id="myForm">
+            <t:SelectTemplate id="template" label="{i18n:Select the template}" />
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=saveTemplate" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="customize" label="{i18n:Customize}">
+        <t:TemplateEdit id="templateEdit" global="true">
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+            </cms:FormButtonsPanel>
+        </t:TemplateEdit>
+    </mvc:State>
+</mvc:Page>

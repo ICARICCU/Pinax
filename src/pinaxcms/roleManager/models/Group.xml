@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:pnx="pinax.components.*"
+    xmlns:model="pinax.models.*/"
+    model:type="2tables"
+    model:tableName="joins_tbl,usergroups_tbl"
+    model:joinFields="join_FK_dest_id,usergroup_id"
+    model:usePrefix="true">
+
+    <model:Query name="getGroups" type="function" arguments="roleId">
+    <![CDATA[
+        $iterator->where('join_objectName', 'roles2usergroups')
+                 ->where('join_FK_source_id', $roleId);
+    ]]>
+	</model:Query>
+
+</model:Model>

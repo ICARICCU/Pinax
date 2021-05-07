@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <pnx:Import src="_common.xml" />
+
+    <mvc:State name="index">
+        <pnx:DataProvider id="dp" recordClassName="pinaxcms.core.models.Language" />
+        <pnx:DataGrid id="dataGrid" label="{i18n:PNX_LANGUAGE_LIST}" dataProvider="{dp}" filters="{filters}" tableCssClass="table table-striped table-bordered" cssClass="odd,even" controller="{dataGridEdit}" orderStyle="BLACK">
+            <pnx:DataGridColumn columnName="language_id"            visible="false" key="true" />
+            <pnx:DataGridColumn columnName="language_name"          headerText="{i18n:PNX_LANGUAGE}" />
+            <pnx:DataGridColumn columnName="language_code"          headerText="{i18n:PNX_LANGUAGE_CODE}" />
+            <pnx:DataGridColumn columnName="language_isDefault"     headerText="{i18n:PNX_LANGUAGE_DEFAULT}" width="120" align="center" renderCell="pinaxcms.views.renderer.CellIsActive" />
+            <pnx:DataGridColumn columnName="language_id" align="right" width="80" renderCell="pinaxcms.languages.views.renderer.CellEditDelete" />
+        </pnx:DataGrid>
+        <pnx:Link label="{i18n:Add new language}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="{config:pinaxcms.icon.add.cssClass}" routeUrl="actionsMVCAdd" editableRegion="actions" acl="*,new"/>
+    </mvc:State>
+
+     <mvc:State name="edit">
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.languages.controllers.*">
+            <cms:pageTitleModifier action="edit" label="{i18n:New language}" new="true" />
+            <cms:pageTitleModifier action="edit" label="{i18n:Edit language}" new="false" field="language_name" />
+            <pnx:Hidden id='__id' />
+            <pnx:Hidden id="__model" value="pinaxcms.core.models.Language"/>
+            <pnx:Hidden id="language_code" />
+            <pnx:Input id="language_name" label="{i18n:PNX_LABEL}" required="true" size="90" />
+            <pnx:DataDictionary id="countryDP" recordClassName="pinaxcms.core.models.Country" field="country_id,country_name" />
+            <pnx:List id="language_FK_country_id" label="{i18n:PNX_LANGUAGE}" dataProvider="{countryDP}" emptyValue="-" required="true" />
+            <pnx:Checkbox id="language_isDefault" label="{i18n:PNX_LANGUAGE_DEFAULT}" data="type=checkbox"/>
+            <pnx:Checkbox id="language_isVisible" label="{i18n:Visible in navigation}" data="type=checkbox"/>
+            <pnx:Input id="language_order" label="{i18n:PNX_LANGUAGE_ORDER}" size="10" />
+
+            <cms:FormButtonsPanel>
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CANCEL}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="delete">
+        <pnx:Hidden controllerName="pinaxcms.languages.controllers.*" />
+    </mvc:State>
+
+</mvc:Page>

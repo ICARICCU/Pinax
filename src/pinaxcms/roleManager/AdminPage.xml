@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pnx:Page id="Page"
+	xmlns:pnx="pinax.components.*"
+    xmlns:r="pinaxcms.roleManager.views.*"
+    xmlns:cms="pinaxcms.views.components.*"
+	templateType="php"
+	templateFileName="Page.php"
+	defaultEditableRegion="content">
+	<pnx:Import src="_common.xml" />
+	<!-- TODO: USARE MVC STATE-->
+	<pnx:StateSwitch id="dataGridEdit" defaultState="list" rememberState="false" customClass="pinaxcms.roleManager.controllers.StateController" >
+		<pnx:State name="list">
+			<pnx:DataProvider id="dp" recordClassName="pinaxcms.roleManager.models.Role" />
+			<pnx:Form id="editForm">
+				<pnx:DataGrid id="dataGrid" label="Elenco ruoli" dataProvider="{dp}" filters="{filters}" tableCssClass="table table-striped table-bordered" cssClass="odd,even" paginate="{dataGridPaginate}" controller="{dataGridEdit}" skipOrder="true">
+					<pnx:DataGridColumn columnName="role_id" 				visible="false" key="true"/>
+					<pnx:DataGridColumn columnName="role_name" 				headerText="Nome" />
+					<pnx:DataGridColumn command="edit" 						width="20" aclService="{php:$application->getPageId()}" />
+					<pnx:DataGridColumn command="delete" 					width="20" aclService="{php:$application->getPageId()}" />
+				</pnx:DataGrid>
+				<pnx:PaginateResult id="dataGridPaginate" cssClass="pagination"/>
+
+		        <pnx:Link label="{i18n:Aggiungi un nuovo ruolo}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="icon-plus" routeUrl="new-role" editableRegion="actions" acl="*,new"/>
+			</pnx:Form>
+		</pnx:State>
+		<pnx:State name="new,edit">
+			<pnx:MessageBox type="ERROR" cssClass="message failure"/>
+			<pnx:LongText adm:htmlEditor="true"><![CDATA[
+			<p class="genericCaption">Creazione nuovo ruolo.</p>
+			<p>Inserire i dati per la creazione del nuovo sito.</p>
+			]]></pnx:LongText>
+			<pnx:Form id="myForm" removeGetValues="false" enctype="multipart/form-data" addValidationJs="false">
+				<pnx:Hidden id="roleId" />
+				<pnx:Input id="roleName" label="{i18n:Nome del ruolo}" size="90" required="true" />
+				<r:Input id="groups" mode="groups" label="{i18n:Gruppi associati}" size="90" />
+				<r:Input id="users" mode="users" label="{i18n:Utenti associati}" size="90" />
+				<pnx:Checkbox id="roleActive" label="{i18n:Attivo}" size="90" />
+    			<r:Permissions id="permissions" label="{i18n:Permessi per il ruolo}" />
+
+				<cms:FormButtonsPanel>
+					<pnx:HtmlButton label="{i18n:Salva}" id="next" value="next" name="action" cssClass="btn btn-primary" />
+					<pnx:Button value="{i18n:PNX_CANCEL}" target="{dataGridEdit}" action="reset" actionType="location" cssClass="btn" visible="true"/>
+				</cms:FormButtonsPanel>
+			</pnx:Form>
+		</pnx:State>
+	</pnx:StateSwitch>
+</pnx:Page>

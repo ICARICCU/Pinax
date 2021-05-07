@@ -1,0 +1,6 @@
+parameters:
+	level: 0
+	paths:
+		- src
+	excludes_analyse:
+		- src/pinax/template/layoutManager/PDF.php

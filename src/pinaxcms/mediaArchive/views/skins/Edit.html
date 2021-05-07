@@ -1,0 +1,20 @@
+<tal:block>
+    <div tal:attributes="class php:'mediaEdit ' . __Config::get('pinax.css.containerfluid')">
+        <div tal:attributes="class php:__Config::get('pinax.css.col10')">
+            <tal:block tal:content="structure Component/form" />
+        </div>
+        <div tal:attributes="class php:__Config::get('pinax.css.col2')">
+            <ul class="thumbnails">
+                <li tal:attributes="class php:__Config::get('pinax.css.col12')">
+                    <a class="thumbnail" href="#">
+                        <img class="js-pinaxMediaPicker" tal:attributes="src Component/thumb_filename" />
+                    </a>
+                    <div class="actions">
+                        <a tal:attributes="href Component/__urlPreview__; title php:__T('Preview')" class="lightbox"><i class="icon-eye-open icon-white"></i></a>
+                        <a tal:attributes="href Component/__urlDownload__; title php:__T('Download')"><i class="icon-download-alt icon-white"></i></a>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</tal:block>

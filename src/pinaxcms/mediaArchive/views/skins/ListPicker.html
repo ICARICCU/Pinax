@@ -1,0 +1,34 @@
+<tal:block>
+    <script>
+$(function(){
+    $("a.lightbox").colorbox({photo:true, maxHeight: 300, maxWidth: 300, scalePhotos: true});
+    $("a.lightbox-iframe").colorbox({iframe:true, width:"95%", height:"95%"});
+
+    $( "img.js-pinaxMediaPicker").click( function(){
+        var $img = jQuery( this );
+        Pinax.events.broadcast('pinaxcms.onSetMediaPicker', $img.data("jsonmedia"));
+    });
+
+    $( ".js-pinaxcmsMediaPicker-noMedia").click( function(){
+        Pinax.events.broadcast('pinaxcms.onSetMediaPicker', null);
+    });
+});
+    </script>
+    <div tal:attributes="class php:__Config::get('pinax.css.rowfluid')">
+    <ul class="thumbnails">
+        <li tal:attributes="class php:__Config::get('pinax.css.col2')" tal:repeat="item Component/records">
+            <a class="thumbnail js-pinaxMediaPicker-a" style="cursor:pointer;" tal:attributes="title item/media_title">
+                <img class="js-pinaxMediaPicker" tal:attributes="src item/thumb_filename; data-id item/media_id; data-jsonmedia item/__jsonMedia" />
+            </a>
+            <div class="title">
+                <div class="inner" tal:content="item/media_title"></div>
+            </div>
+            <div class="actions">
+                <a tal:condition="php: item.media_type==='IMAGE'" tal:attributes="href item/__urlPreview__; title php:__T('Preview')" class="lightbox"><i class="icon-eye-open icon-white"></i></a>
+                <a tal:condition="php: item.media_type==='PDF'" tal:attributes="href item/__urlPreview__; title php:__T('Preview')" class="lightbox-iframe"><i class="icon-eye-open icon-white"></i></a>
+                <a tal:condition="php: item.media_type!=='IMAGE' AND item.media_type!=='PDF'" tal:attributes="href item/__urlPreview__; title php:__T('Preview')" target="_blank"><i class="icon-eye-open icon-white"></i></a>
+            </div>
+        </li>
+    </ul>
+</div>
+</tal:block>

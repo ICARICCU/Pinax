@@ -1,0 +1,124 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<title>{#PNX_links.window_title}</title>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+	<script  type="text/javascript" src="../../tiny_mce_popup.js"></script>
+	<script language="javascript" type="text/javascript" src="../../utils/mctabs.js"></script>
+	<script language="javascript" type="text/javascript" src="../../utils/form_utils.js"></script>
+    <script language="javascript" type="text/javascript" src="../../../Pinax.js"></script>
+	<script language="javascript" type="text/javascript" src="jscripts/functions.js"></script>
+	<link href="css/PNX_links.css" rel="stylesheet" type="text/css" />
+</head>
+<body id="PNX_links" style="display: none">
+    <form onsubmit="insertAction();return false;" action="#">
+		<input type="hidden" name="mediaId" value="" />
+		<input type="hidden" name="mediaTitle" value="" />
+		<div class="panel_wrapper" style="width: 380px;">
+				<fieldset class="multifieldset">
+					<legend>{#PNX_links.general_legend}</legend>
+                    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+						<tr>
+						  <td nowrap="nowrap"><label id="linkTypeLabel" for="linkType">{#PNX_links.link_type}</label></td>
+						  <td colspan="3" width="100%"><select id="linkType" style="width:100%" onchange="setLinkType(this.value)">
+						  	<option>---</option>
+						  	<option value="7">Link elementi della pagina</option>
+						  	<option value="1">{#PNX_links.internal_link}</option>
+						  	<option value="6">{#PNX_links.relative_link}</option>
+						  	<option value="2">{#PNX_links.external_link}</option>
+						  	<option value="3">{#PNX_links.media_link}</option>
+						  	<option value="4">{#PNX_links.anchor}</option>
+						  </select></td>
+						</tr>
+						<tr>
+							<td nowrap="nowrap"><label id="linkUrlLabel" for="linkUrl">{#PNX_links.link_url}</label></td>
+							<td width="1%"><select id="protocol"><option selected="selected" value="http://">http://</option><option value="https://">https://</option><option value="ftp://">ftp://</option><option value="mailto:">mailto:</option></select></td>
+                            <td colspan="2"><input id="linkUrl" name="linkUrl" style="width:100%" type="text" value="" disabled="disabled" class="ja={suggest:{src:'../../../../../../../admin/ajax.php?pageId=AjaxCatalog&ajaxTarget=glossary',key:'t'}}"/></td>
+						</tr>
+						<tr>
+							<td nowrap><label id="internalLinkLabel" for="internalLink">{#PNX_links.internal_link}</label></td>
+							<td colspan="3" id="internalLinks">
+							</td>
+						</tr>
+						<tr id="anchorQueryGroup" style="display: none">
+							<td nowrap><label id="anchorLabel" for="anchor">{#PNX_links.anchorQueryString}</label></td>
+							<td colspan="3"><input id="anchor" type="text" disabled="disabled" /></td>
+							</td>
+						</tr>
+						<tr>
+							<td nowrap="nowrap"><label id="titleLabel" for="title">{#PNX_links.title}</label></td>
+							<td colspan="3"><input id="title" type="text" value="" /></td>
+						</tr>
+						<tr>
+							<td nowrap><label id="relLabel" for="rel">{#PNX_links.open_external}</label></td>
+							<td>
+								<input type="checkbox" id="relExternal" name="nameExternal" value="1" />
+							</td>
+						</tr>
+					</table>
+				</fieldset>
+				<fieldset>
+					<legend>{#PNX_links.advanced_legend}</legend>
+                    <table border="0" cellpadding="4" cellspacing="0" width="100%">
+						<tr>
+							<td class="column1"><label id="idlabel" for="id">{#PNX_links.id}</label></td>
+							<td><input id="id" name="id" type="text" value="" /></td>
+						</tr>
+						<tr>
+							<td nowrap="nowrap"><label id="styleLabel" for="style">{#PNX_links.style}</label></td>
+							<td width="100%"><input id="style" type="text" value="" /></td>
+						</tr>
+						<tr id="classRow">
+							<td nowrap="nowrap"><label id="classesLabel" for="classlist">{#PNX_links.classes}</label></td>
+							<td><input id="cssclass" name="cssclass" type="text" value="" /></td>
+						</tr>
+												<tr>
+							<td class="column1"><label id="dirlabel" for="dir">{#PNX_links.langdir}</label></td>
+							<td>
+								<select id="dir" name="dir">
+										<option value="">{#PNX_links.not_set}</option>
+										<option value="ltr">{#PNX_links.ltr}</option>
+										<option value="rtl">{#PNX_links.rtl}</option>
+								</select>
+							</td>
+						</tr>
+
+						<tr>
+							<td><label id="hreflanglabel" for="hreflang">{#PNX_links.target_langcode}</label></td>
+							<td><input type="text" id="hreflang" name="hreflang" value="" /></td>
+						</tr>
+
+						<tr>
+							<td class="column1"><label id="langlabel" for="lang">{#PNX_links.langcode}</label></td>
+							<td>
+								<input id="lang" name="lang" type="text" value="" />
+							</td>
+						</tr>
+
+						<tr>
+							<td><label id="charsetlabel" for="charset">{#PNX_links.encoding}</label></td>
+							<td><input type="text" id="charset" name="charset" value="" /></td>
+						</tr>
+
+						<tr>
+							<td nowrap="nowrap"><label id="tabindexLabel" for="tabindex">{#PNX_links.tabindex}</label></td>
+							<td><input id="tabindex" type="text" value="" /></td>
+						</tr>
+						<tr>
+							<td nowrap="nowrap"><label id="accesskeyLabel" for="accesskey">{#PNX_links.accesskey}</label></td>
+							<td><input id="accesskey" type="text" value="" /></td>
+						</tr>
+					</table>
+				</fieldset>
+			</div>
+
+		<div class="mceActionPanel">
+			<input type="submit" id="insert" name="insert" value="{#insert}" onclick="insertAction();" />
+			<input type="button" id="cancel" name="cancel" value="{#cancel}" onclick="tinyMCEPopup.close();" />
+		</div>
+
+		<div id="pickerPanel">
+			<iframe id="picker" frameborder="0"></iframe>
+		</div>
+    </form>
+</body>
+</html>

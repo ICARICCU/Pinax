@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pnx:Routing>
+    <pnx:Route name="pinaxcms.userManager.registration" value="{pageId=registration}" />
+    <pnx:Route name="pinaxcms.userManager.lostpassword" value="{pageId=lostpassword}" />
+    <pnx:Route name="pinaxcms.userManager.userdetails" value="{pageId=userdetails}" />
+    <pnx:Route name="pinaxcms.userManager.logout" value="logout" pageId="login" action="logout" />
+</pnx:Routing>

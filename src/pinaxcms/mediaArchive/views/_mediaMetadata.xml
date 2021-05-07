@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<pnx:include
+    xmlns:pnx="pinax.components.*">
+
+    <pnx:Input id="media_title" label="{i18n:Title}" size="90" required="true" />
+    <pnx:Input id="media_category" label="{i18n:Category}" data="type=selectfrom;multiple=true;add_new_values=true;model=pinaxcms.models.Media" size="255" />
+    <pnx:Input id="media_author" label="{i18n:Author}" data="type=selectfrom;multiple=false;add_new_values=true;model=pinaxcms.models.Media" size="255" />
+    <pnx:Input id="media_date" label="{i18n:Date}" size="90" />
+    <pnx:Input id="media_copyright" label="{i18n:Copyright}" data="type=selectfrom;multiple=false;add_new_values=true;model=pinaxcms.models.Media" size="255" />
+    <pnx:Input id="media_description" label="{i18n:Description}" size="90" type="multiline" rows="10" cols="70" htmlEditor="true" data="type=tinymce" />
+    <pnx:Checkbox id="media_zoom" label="{i18n:Show zoom}" />
+    <pnx:Checkbox id="media_allowDownload" label="{i18n:Allow download}" />
+    <pnx:Checkbox id="media_watermark" label="{i18n:Insert watermark}" />
+
+</pnx:include>
+

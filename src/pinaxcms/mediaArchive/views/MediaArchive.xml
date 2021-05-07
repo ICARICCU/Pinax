@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mvc:Page id="Page"
+    xmlns:pnx="pinax.components.*"
+    xmlns:cms="pinaxcms.views.components.*"
+    xmlns:mvc="pinax.mvc.components.*"
+    xmlns:ma="pinaxcms.mediaArchive.views.components.*"
+    controllerName="pinaxcms.mediaArchive.controllers.*"
+    defaultEditableRegion="content"
+    templateType="php"
+    templateFileName="Page.php">
+    <pnx:Import src="_common.xml" />
+
+    <mvc:StateTabNavigation id="tab" cssClass="nav nav-tabs" cssClassCurrent="active" visible="false" />
+
+    <mvc:State name="index">
+        <pnx:TabGroup id="tabs_sort" defaultState="media_creationDate" cssClass="nav nav-pills pull-right" rememberState="true" rememberMode="persistent">
+            <pnx:Tab name="-" onlyLabel="true" label="{i18n:MW_SM_SORT}"></pnx:Tab>
+            <pnx:Tab name="media_creationDate" label="{i18n:ORDER_BY_DATE}"></pnx:Tab>
+            <pnx:Tab name="media_title" label="{i18n:ORDER_BY_TITLE}"></pnx:Tab>
+        </pnx:TabGroup>
+
+        <pnx:TabGroup id="tabs" defaultState="allMedia" cssClass="nav nav-pills" rememberState="true">
+            <pnx:Tab name="-" onlyLabel="true" label="{i18n:MW_SM_SHOW}"></pnx:Tab>
+            <pnx:Tab name="allMedia" label="{i18n:MW_SM_SHOW_ALL_MEDIA}"></pnx:Tab>
+            <pnx:Tab name="allImage" label="{i18n:MW_SM_SHOW_IMAGES}"></pnx:Tab>
+            <pnx:Tab name="allOffice" label="{i18n:MW_SM_SHOW_DOCUMENTS}"></pnx:Tab>
+            <pnx:Tab name="allPdf" label="{i18n:MW_SM_SHOW_PDF}"></pnx:Tab>
+            <pnx:Tab name="allArchive" label="{i18n:MW_SM_SHOW_COMPRESSED}"></pnx:Tab>
+            <pnx:Tab name="allAudio" label="{i18n:MW_SM_SHOW_AUDIO_FILES}"></pnx:Tab>
+            <pnx:Tab name="allVideo" label="{i18n:MW_SM_SHOW_VIDEO}"></pnx:Tab>
+        </pnx:TabGroup>
+
+
+        <cms:VisualSearch id="filters" label="{i18n:Search}" cssClass="row-fluid clearfix my-filters" model="pinaxcms.models.Media">
+            <cms:VisualSearchItem id="media_author" label="{i18n:Author}" type="facetSingle" />
+            <cms:VisualSearchItem id="media_category" label="{i18n:Category}" type="facet" />
+            <cms:VisualSearchItem id="media_description" label="{i18n:Description}" />
+            <cms:VisualSearchItem id="media_originalFileName" label="{i18n:File name}" />
+            <cms:VisualSearchItem id="media_title" label="{i18n:Title}" />
+
+            <pnx:Panel cssClass="pull-left">
+                <pnx:HtmlButton label="{i18n:PNX_SEARCH}" value="SEARCH" target="{filters}" cssClass="btn btn-primary" />
+                <pnx:HtmlButton label="{i18n:PNX_RESET}" value="RESET" target="{filters}" cssClass="btn" />
+            </pnx:Panel>
+        </cms:VisualSearch>
+
+        <pnx:Panel cssClass="row-fluid">
+            <pnx:Script extendParent="true"><![CDATA[
+public function render_html_onStart()
+{
+    $this->_application->addLightboxJsCode();
+    parent::render_html_onStart();
+}
+            ]]></pnx:Script>
+
+            <pnx:DataProvider id="dp" recordClassName="pinaxcms.models.Media" order="media_title" queryOperator="OR" />
+            <pnx:RecordSetList id="list" dataProvider="{dp}" processCell="pinaxcms.mediaArchive.views.renderer.CellMediaArchive" paginate="{paginate}" filters="{filters}" skin="pinaxcms.mediaArchive.views:ListArchive.html" />
+            <pnx:PaginateResult id="paginate" pageLength="42" cssClass="pagination" showTotal="true" />
+        </pnx:Panel>
+
+        <pnx:Link id="deleteSelectedButton" label="{i18n:Delete selected}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="{config:pinaxcms.icon.delete.cssClass}" routeUrl="" editableRegion="actions" acl="*,delete"/>
+        <pnx:Link label="{i18n:MW_MEDIA_ADD}" cssClass="{config:pinaxcms.form.actionLink.cssClass}" icon="{config:pinaxcms.icon.add.cssClass}" routeUrl="pinaxcmsMediaArchiveAdd" editableRegion="actions" acl="*,new"/>
+    </mvc:State>
+
+    <mvc:State name="add" label="{i18n:MW_MEDIA_ADD}">
+        <pnx:Modifier target="tab" attribute="visible" value="true" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.mediaArchive.controllers.mediaEdit.*" >
+            <pnx:Input id="fileuploader" label="{i18n:PNX_UPLOAD}" data="type=file;fieldsetid=medias" />
+            <pnx:Fieldset id="medias" label="Media" data="type=repeat;collapsable=false;noAddRowButton=true">
+                <pnx:Hidden id="__uploadFilename" />
+                <pnx:Hidden id="__originalFileName" />
+                <pnx:include src="_mediaMetadata.xml" override="true" />
+            </pnx:Fieldset>
+            <cms:FormButtonsPanel editableRegion="{config:pinax.formButton.region}">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CLOSE}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State id="addFromServer" name="addFromServer" label="{i18n:MW_MEDIA_ADD_SERVER}">
+        <pnx:Modifier target="tab" attribute="visible" value="true" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.mediaArchive.controllers.mediaEdit.*" >
+            <ma:FilePicker id="mediaFileServer" pageId="MediaStorageBrowser" label="{i18n:File}" required="true"/>
+            <pnx:include src="_mediaMetadata.xml" override="true" />
+
+            <cms:FormButtonsPanel editableRegion="{config:pinax.formButton.region}">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CLOSE}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="addFromZip" label="{i18n:MW_MEDIA_ADD_ZIP}">
+        <pnx:Modifier target="tab" attribute="visible" value="true" />
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.mediaArchive.controllers.mediaEdit.*" >
+            <pnx:Input id="fileuploader" label="{i18n:PNX_UPLOAD}" data="type=file;fieldsetid=medias" />
+            <pnx:Fieldset id="medias" label="Media" data="type=repeat;collapsable=false;noAddRowButton=true">
+                <pnx:Hidden id="__expand" value="1" />
+                <pnx:Hidden id="__uploadFilename" />
+                <pnx:Hidden id="__originalFileName" />
+                <pnx:include src="_mediaMetadata.xml" override="true" />
+            </pnx:Fieldset>
+            <cms:FormButtonsPanel editableRegion="{config:pinax.formButton.region}">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CLOSE}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+
+    <mvc:State name="edit,delete">
+        <cms:FormEdit id="myForm" controllerName="pinaxcms.mediaArchive.controllers.mediaEdit.*" >
+            <pnx:Hidden id='media_id' />
+
+            <pnx:JSTabGroup id="editImage" visible="true">
+                <pnx:JSTab id="generalData" label="{i18n:General data}">
+                    <pnx:EmptyComponent id="preview" acceptOutput="true" skin="pinaxcms.mediaArchive.views:Edit.html">
+                        <pnx:EmptyComponent id="form" >
+                            <pnx:Input id="media_originalFileName" label="{i18n:File name}" size="90" disabled="true"/>
+                            <pnx:include src="_mediaMetadata.xml" override="true" />
+
+                            <pnx:Input id="mediaToReplaceUploader" label="{i18n:Sostituisci file}" data="type=file;fieldsetid=mediaToReplace;maxFiles=1" />
+                            <pnx:Fieldset id="mediaToReplace" label="Media" data="type=repeat;collapsable=false;noAddRowButton=true" cssClass="hidden">
+                                <pnx:Hidden id="__uploadFilename" />
+                                <pnx:Hidden id="__originalFileName" />
+                            </pnx:Fieldset>
+                        </pnx:EmptyComponent>
+                    </pnx:EmptyComponent>
+                </pnx:JSTab>
+                <pnx:JSTab id="exifData" label="{i18n:Exif data}" visible="{config:pinaxcms.mediaArchive.exifEnabled}">
+                    <ma:ShowExif imageId="{php:__Request::get('id')}"/>
+                </pnx:JSTab>
+            </pnx:JSTabGroup>
+            <cms:FormButtonsPanel editableRegion="{config:pinax.formButton.region}">
+                <pnx:HtmlButton label="{i18n:PNX_SAVE}" type="button" cssClass="btn btn-primary js-pinaxcms-save" data="action=save" />
+                <pnx:HtmlButton label="{i18n:PNX_SAVE_CLOSE}" type="button" cssClass="btn js-pinaxcms-save" data="action=saveClose" />
+                <pnx:HtmlButton label="{i18n:PNX_CLOSE}" type="button" cssClass="btn js-pinaxcms-cancel" data="action=cancel" />
+            </cms:FormButtonsPanel>
+        </cms:FormEdit>
+    </mvc:State>
+</mvc:Page>

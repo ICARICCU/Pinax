@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<model:Model
+    xmlns:pnx="pinax.components.*"
+    xmlns:model="pinax.models.*/"
+    model:tableName="joins_tbl" model:usePrefix="true">
+
+    <model:Query name="loadRelations" type="function" arguments="source,dest,name">
+    <![CDATA[
+        if ($source) {
+            $iterator->where('join_FK_source_id', $source, '=');
+        }
+        if ($dest) {
+            $iterator->where('join_FK_dest_id', $dest, '=');
+        }
+        if ($name) {
+            $iterator->where('join_objectName', $name, '=');
+        }
+    ]]>
+    </model:Query>
+
+</model:Model>
