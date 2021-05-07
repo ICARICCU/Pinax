@@ -90,7 +90,15 @@ class pinax_Config implements pinax_interfaces_Config
 				}
             }
 
-            if (is_numeric($value)){
+            if ( $value === "true" )
+            {
+                $value = true;
+            }
+            else if ( $value === "false" )
+            {
+                $value = false;
+            }
+            else if (is_numeric($value)){
                 $value = (int)$value;
             }
         }
